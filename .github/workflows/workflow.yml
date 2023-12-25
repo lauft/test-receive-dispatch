@@ -1,0 +1,27 @@
+name: Test workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      param1:
+        description: 'Parameter 1'
+        required: true
+        default: 'default_value1'
+      param2:
+        description: 'Parameter 2'
+        required: true
+        default: 'default_value2'
+  repository_dispatch:
+    types: [test-workflow]
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run a one-line script
+        run: |
+          echo "Param1: ${{ github.event.client_payload.param1 }}${{ github.event.inputs.param1 }}"
+          echo "Param2: ${{ github.event.client_payload.param2 }}${{ github.event.inputs.param2 }}"
